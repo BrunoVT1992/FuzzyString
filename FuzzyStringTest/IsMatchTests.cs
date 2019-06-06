@@ -8,7 +8,7 @@ namespace FuzzyStringTest
         [Test]
         public void SourceNull()
         {
-            var isMatch = FuzzyStringFinder.IsMatch(null, "foo");
+            var isMatch = FuzzyStringFinder.Instance.IsMatch(null, "foo");
 
             Assert.IsFalse(isMatch);
         }
@@ -16,7 +16,7 @@ namespace FuzzyStringTest
         [Test]
         public void SourceEmpty()
         {
-            var isMatch = FuzzyStringFinder.IsMatch(string.Empty, "foo");
+            var isMatch = FuzzyStringFinder.Instance.IsMatch(string.Empty, "foo");
 
             Assert.IsFalse(isMatch);
         }
@@ -24,7 +24,7 @@ namespace FuzzyStringTest
         [Test]
         public void TargetNull()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", null);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", null);
 
             Assert.IsFalse(isMatch);
         }
@@ -32,7 +32,7 @@ namespace FuzzyStringTest
         [Test]
         public void TargetEmpty()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", string.Empty);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", string.Empty);
 
             Assert.IsFalse(isMatch);
         }
@@ -40,7 +40,7 @@ namespace FuzzyStringTest
         [Test]
         public void SourceAndTargetNull()
         {
-            var isMatch = FuzzyStringFinder.IsMatch(null, null);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch(null, null);
 
             Assert.IsFalse(isMatch);
         }
@@ -48,7 +48,7 @@ namespace FuzzyStringTest
         [Test]
         public void SourceAndTargetEmpty()
         {
-            var isMatch = FuzzyStringFinder.IsMatch(string.Empty, string.Empty);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch(string.Empty, string.Empty);
 
             Assert.IsFalse(isMatch);
         }
@@ -56,7 +56,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_BothLowerCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", "foo", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", "foo", true);
 
             Assert.IsTrue(isMatch);
         }
@@ -64,7 +64,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_BothUpperCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("FOO", "FOO", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("FOO", "FOO", true);
 
             Assert.IsTrue(isMatch);
         }
@@ -72,7 +72,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_SourceUpperCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("FOO", "foo", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("FOO", "foo", true);
 
             Assert.IsFalse(isMatch);
         }
@@ -80,7 +80,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_TargetUpperCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", "FOO", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", "FOO", true);
 
             Assert.IsFalse(isMatch);
         }
@@ -88,7 +88,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_BothLowerCase_CaseInSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", "foo", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", "foo", false);
 
             Assert.IsTrue(isMatch);
         }
@@ -96,7 +96,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_BothUpperCase_CaseInSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("FOO", "FOO", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("FOO", "FOO", false);
 
             Assert.IsTrue(isMatch);
         }
@@ -104,7 +104,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_SourceUpperCase_CaseInSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("FOO", "foo", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("FOO", "foo", false);
 
             Assert.IsTrue(isMatch);
         }
@@ -112,7 +112,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_TargetUpperCase_CaseInSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("foo", "FOO", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("foo", "FOO", false);
 
             Assert.IsTrue(isMatch);
         }
@@ -120,7 +120,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_SourceMixedCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("HELLO world", "hello world", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("HELLO world", "hello world", true);
 
             Assert.IsFalse(isMatch);
         }
@@ -128,7 +128,7 @@ namespace FuzzyStringTest
         [Test]
         public void ExactMatch_TargetMixedCase_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hello world", "HELLO world", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hello world", "HELLO world", true);
 
             Assert.IsFalse(isMatch);
         }
@@ -136,7 +136,7 @@ namespace FuzzyStringTest
         [Test]
         public void WrongSpelling_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hello", "world", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hello", "world", true);
 
             Assert.IsFalse(isMatch);
         }
@@ -144,7 +144,7 @@ namespace FuzzyStringTest
         [Test]
         public void WrongSpelling_CaseInsensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hello", "world", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hello", "world", false);
 
             Assert.IsFalse(isMatch);
         }
@@ -152,7 +152,7 @@ namespace FuzzyStringTest
         [Test]
         public void PartialWrongSpelling_CaseSensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("Hello World", "hello world", true);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("Hello World", "hello world", true);
 
             Assert.IsTrue(isMatch);
         }
@@ -160,7 +160,7 @@ namespace FuzzyStringTest
         [Test]
         public void PartialWrongSpelling_CaseInsensitive()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hello orld", "hello world", false);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hello orld", "hello world", false);
 
             Assert.IsTrue(isMatch);
         }
@@ -168,7 +168,7 @@ namespace FuzzyStringTest
         [Test]
         public void PartialWrongSpelling_LowRequiredMatchStrenght_HighMatchCount()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, 0.5, 6);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hell Worl", "hello world", false, 0.5, 6);
 
             Assert.IsTrue(isMatch);
         }
@@ -176,7 +176,7 @@ namespace FuzzyStringTest
         [Test]
         public void PartialWrongSpelling_HighRequiredMatchStrenght_HighMatchCount()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, 0.85, 6);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hell Worl", "hello world", false, 0.85, 6);
 
             Assert.IsFalse(isMatch);
         }
@@ -184,7 +184,7 @@ namespace FuzzyStringTest
         [Test]
         public void PartialWrongSpelling_LowMatchCount()
         {
-            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, minMatchCount: 1);
+            var isMatch = FuzzyStringFinder.Instance.IsMatch("hell Worl", "hello world", false, minMatchCount: 1);
 
             Assert.IsTrue(isMatch);
         }

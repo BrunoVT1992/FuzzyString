@@ -2,21 +2,24 @@
 
 namespace FuzzyString.Algorithms
 {
-    //https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-    public static class LongestCommonSubsequence
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
+    /// </summary>
+    public class LongestCommonSubsequence : BaseAlgorithm
     {
-        /// <summary>
-        /// Gives back the longes common subsequence
-        /// For example: in source 123456 and target 003400 it will give back 34
-        /// </summary>
-        public static string Calculate(string source, string target)
+        public override double Calculate(string source, string target)
+        {
+            return Convert.ToDouble(CalculateLongestCommonSubsequence(source, target).Length) / Convert.ToDouble(Math.Min(source.Length, target.Length));
+        }
+
+        private string CalculateLongestCommonSubsequence(string source, string target)
         {
             int[,] C = LongestCommonSubsequenceLengthTable(source, target);
 
             return Backtrack(C, source, target, source.Length, target.Length);
         }
 
-        private static int[,] LongestCommonSubsequenceLengthTable(string source, string target)
+        private int[,] LongestCommonSubsequenceLengthTable(string source, string target)
         {
             int[,] C = new int[source.Length + 1, target.Length + 1];
 
@@ -40,7 +43,7 @@ namespace FuzzyString.Algorithms
             return C;
         }
 
-        private static string Backtrack(int[,] C, string source, string target, int i, int j)
+        private string Backtrack(int[,] C, string source, string target, int i, int j)
         {
             if (i == 0 || j == 0)
                 return string.Empty;

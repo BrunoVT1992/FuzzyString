@@ -1,13 +1,29 @@
 ﻿using FuzzyString.Algorithms;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FuzzyString
 {
-    public static class FuzzyStringFinder
+    public class FuzzyStringFinder
     {
-        public static string FindMatch(string source, IEnumerable<string> targets, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 3)
+        private List<BaseAlgorithm> _algorithms;
+
+        public FuzzyStringFinder()
+        {
+            _algorithms = new List<BaseAlgorithm>
+            {
+                new HammingDistance(),
+                new JaccardDistance(),
+                new LevenshteinDistance(),
+                new LongestCommonSubsequence(),
+                new LongestCommonSubstring(),
+                new OverlapCoefficient(),
+                new RatcliffObershelpSimilarity(),
+                new SorensenDiceDistance()
+            };
+        }
+
+        public string FindMatch(string source, IEnumerable<string> targets, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 3)
         {
             if (targets?.Any() != true)
                 return null;
@@ -36,7 +52,7 @@ namespace FuzzyString
             return foundMatch;
         }
 
-        public static bool IsMatch(string source, string target, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 2)
+        public bool IsMatch(string source, string target, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 2)
         {
             var foundMatchStrenghts = FindMatchStrenght(source, target, caseSensitive);
 
@@ -45,7 +61,7 @@ namespace FuzzyString
             return passingMatchStrenghts.Count() >= minMatchCount && passingMatchStrenghts.Max() >= requiredMatchStrenght;
         }
 
-        private static List<double> FindMatchStrenght(string source, string target, bool caseSensitive)
+        private List<double> FindMatchStrenght(string source, string target, bool caseSensitive)
         {
             var comparisonResults = new List<double>();
 
@@ -61,24 +77,37 @@ namespace FuzzyString
             if (source == target)
                 comparisonResults.Add(1);
 
-            if (source.Length == target.Length)
-                comparisonResults.Add(1 - (HammingDistance.Calculate(source, target) / (double)target.Length));
-
-            comparisonResults.Add(1 - JaccardDistance.Calculate(source, target));
-
-            comparisonResults.Add(1 - Convert.ToDouble(LevenshteinDistance.Calculate(source, target)) / Convert.ToDouble(LevenshteinDistance.CalculateUpperBounds(source, target)));
-
-            comparisonResults.Add(Convert.ToDouble(LongestCommonSubsequence.Calculate(source, target).Length) / Convert.ToDouble(Math.Min(source.Length, target.Length)));
-
-            comparisonResults.Add(Convert.ToDouble(LongestCommonSubstring.Calculate(source, target).Length) / Convert.ToDouble(Math.Min(source.Length, target.Length)));
-
-            comparisonResults.Add(1 - SorensenDiceDistance.Calculate(source, target));
-
-            comparisonResults.Add(OverlapCoefficient.Calculate(source, target));
-
-            comparisonResults.Add(RatcliffObershelpSimilarity.Calculate(source, target));
+            foreach (var algorithm in _algorithms)
+            {
+                if (algorithm.CanCalculate(source, target))
+                    comparisonResults.Add(algorithm.Calculate(source, target));
+            }
 
             return comparisonResults;
+        }
+
+        public void AddAlgorithm(BaseAlgorithm algorithm)
+        {
+            _algorithms.Add(algorithm);
+        }
+
+        private static object _locker = new object();
+        private static FuzzyStringFinder _instance;
+        public static FuzzyStringFinder Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_locker)
+                    {
+                        if (_instance == null)
+                            _instance = new FuzzyStringFinder();
+                    }
+                }
+
+                return _instance;
+            }
         }
     }
 }

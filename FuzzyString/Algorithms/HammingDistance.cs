@@ -1,9 +1,21 @@
 ﻿namespace FuzzyString.Algorithms
 {
-    //https://en.wikipedia.org/wiki/Hamming_distance
-    public static class HammingDistance
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Hamming_distance
+    /// </summary>
+    public class HammingDistance : BaseAlgorithm
     {
-        public static int Calculate(string source, string target)
+        public override double Calculate(string source, string target)
+        {
+            return 1 - (CalculateHammingDistance(source, target) / (double)target.Length);
+        }
+
+        public override bool CanCalculate(string source, string target)
+        {
+            return source.Length == target.Length;
+        }
+
+        private int CalculateHammingDistance(string source, string target)
         {
             if (source.Length != target.Length)
                 return int.MaxValue;

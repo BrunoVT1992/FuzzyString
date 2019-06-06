@@ -9,7 +9,7 @@ namespace FuzzyStringTest
         [Test]
         public void TargetsNull()
         {
-            var match = FuzzyStringFinder.FindMatch("foo", null);
+            var match = FuzzyStringFinder.Instance.FindMatch("foo", null);
 
             Assert.IsNull(match);
         }
@@ -19,7 +19,7 @@ namespace FuzzyStringTest
         {
             var targets = new List<string>();
 
-            var match = FuzzyStringFinder.FindMatch("foo", targets);
+            var match = FuzzyStringFinder.Instance.FindMatch("foo", targets);
 
             Assert.IsNull(match);
         }
@@ -32,7 +32,7 @@ namespace FuzzyStringTest
                 "foo"
             };
 
-            var match = FuzzyStringFinder.FindMatch(null, targets);
+            var match = FuzzyStringFinder.Instance.FindMatch(null, targets);
 
             Assert.IsNull(match);
         }
@@ -45,7 +45,7 @@ namespace FuzzyStringTest
                 "foo"
             };
 
-            var match = FuzzyStringFinder.FindMatch(string.Empty, targets);
+            var match = FuzzyStringFinder.Instance.FindMatch(string.Empty, targets);
 
             Assert.IsNull(match);
         }
@@ -53,7 +53,7 @@ namespace FuzzyStringTest
         [Test]
         public void SourceAndTargetEmptyNull()
         {
-            var match = FuzzyStringFinder.FindMatch(null, null);
+            var match = FuzzyStringFinder.Instance.FindMatch(null, null);
 
             Assert.IsNull(match);
         }
@@ -63,7 +63,7 @@ namespace FuzzyStringTest
         {
             var targets = new List<string>();
 
-            var match = FuzzyStringFinder.FindMatch(string.Empty, targets);
+            var match = FuzzyStringFinder.Instance.FindMatch(string.Empty, targets);
 
             Assert.IsNull(match);
         }
@@ -79,7 +79,7 @@ namespace FuzzyStringTest
                 "HELLO WORLD"
             };
 
-            var match = FuzzyStringFinder.FindMatch("foo", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("foo", targets, true);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("foo", match);
@@ -96,7 +96,7 @@ namespace FuzzyStringTest
                 "HELLO WORLD"
             };
 
-            var match = FuzzyStringFinder.FindMatch("Foo", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("Foo", targets, true);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("foo", match);
@@ -113,7 +113,7 @@ namespace FuzzyStringTest
                 "HELLO WORLD"
             };
 
-            var match = FuzzyStringFinder.FindMatch("FoO", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("FoO", targets, true);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("FOO", match);
@@ -128,7 +128,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("foo", targets, false);
+            var match = FuzzyStringFinder.Instance.FindMatch("foo", targets, false);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("foo", match);
@@ -143,7 +143,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("FOO", targets, false);
+            var match = FuzzyStringFinder.Instance.FindMatch("FOO", targets, false);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("foo", match);
@@ -160,7 +160,7 @@ namespace FuzzyStringTest
                 "HELLO WORLD"
             };
 
-            var match = FuzzyStringFinder.FindMatch("hello orld", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("hello orld", targets, true);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("hello world", match);
@@ -177,7 +177,7 @@ namespace FuzzyStringTest
                 "HELLO WORLD"
             };
 
-            var match = FuzzyStringFinder.FindMatch("HELLO ORLD", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("HELLO ORLD", targets, true);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("HELLO WORLD", match);
@@ -192,7 +192,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("HeLLo ORlD", targets, false);
+            var match = FuzzyStringFinder.Instance.FindMatch("HeLLo ORlD", targets, false);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("hello world", match);
@@ -207,7 +207,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("abcde", targets, true);
+            var match = FuzzyStringFinder.Instance.FindMatch("abcde", targets, true);
 
             Assert.IsNull(match);
         }
@@ -221,7 +221,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("aBcDe", targets, false);
+            var match = FuzzyStringFinder.Instance.FindMatch("aBcDe", targets, false);
 
             Assert.IsNull(match);
         }
@@ -235,7 +235,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("hell worl", targets, false, 0.85, 6);
+            var match = FuzzyStringFinder.Instance.FindMatch("hell worl", targets, false, 0.85, 6);
 
             Assert.IsNull(match);
         }
@@ -249,7 +249,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("hell worl", targets, false, 0.5, 6);
+            var match = FuzzyStringFinder.Instance.FindMatch("hell worl", targets, false, 0.5, 6);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("hello world", match);
@@ -264,7 +264,7 @@ namespace FuzzyStringTest
                 "hello world"
             };
 
-            var match = FuzzyStringFinder.FindMatch("hell world", targets, false, 1.0);
+            var match = FuzzyStringFinder.Instance.FindMatch("hell world", targets, false, 1.0);
 
             Assert.IsNull(match);
         }
@@ -277,7 +277,7 @@ namespace FuzzyStringTest
                 "foo"
             };
 
-            var match = FuzzyStringFinder.FindMatch("abc", targets, false, 0.0);
+            var match = FuzzyStringFinder.Instance.FindMatch("abc", targets, false, 0.0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("foo", match);

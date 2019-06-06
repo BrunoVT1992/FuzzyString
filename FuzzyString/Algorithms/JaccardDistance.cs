@@ -3,18 +3,16 @@ using System.Linq;
 
 namespace FuzzyString.Algorithms
 {
-    //https://en.wikipedia.org/wiki/Jaccard_index
-    public static class JaccardDistance
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Jaccard_index
+    /// </summary>
+    public class JaccardDistance : BaseAlgorithm
     {
-        /// <summary>
-        /// Returns a number that displays the similarity between the 2 strings
-        /// </summary>
-        public static double Calculate(string source, string target)
+        public override double Calculate(string source, string target)
         {
-            return 1 - CalculateIndex(source, target);
+            return CalculateJaccardDistance(source, target);
         }
-
-        public static double CalculateIndex(string source, string target)
+        private double CalculateJaccardDistance(string source, string target)
         {
             return (Convert.ToDouble(source.Intersect(target).Count())) / (Convert.ToDouble(source.Union(target).Count()));
         }
