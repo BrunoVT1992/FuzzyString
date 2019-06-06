@@ -7,39 +7,50 @@ namespace FuzzyString
 {
     public static class FuzzyStringFinder
     {
-        public static string FindMatch(string source, IEnumerable<string> targets, bool caseSensitive = true, double matchStrenght = 0.66)
+        public static string FindMatch(string source, IEnumerable<string> targets, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 3)
         {
             if (targets?.Any() != true)
                 return null;
 
             string foundMatch = null;
-            var foundMatchStrenght = 0.0;
+            var foundMatchStrenght = -1.0;
 
             foreach (var target in targets)
             {
-                var currentMatchStrenght = FindMatchStrenght(source, target, caseSensitive);
+                var currentMatchStrenghts = FindMatchStrenght(source, target, caseSensitive);
 
-                if (currentMatchStrenght >= matchStrenght && currentMatchStrenght > foundMatchStrenght)
+                var passingMatchStrenghts = currentMatchStrenghts.Where(x => x >= requiredMatchStrenght);
+
+                if (passingMatchStrenghts.Count() >= minMatchCount)
                 {
-                    foundMatchStrenght = currentMatchStrenght;
-                    foundMatch = target;
+                    var maxPassingMaxStrenght = passingMatchStrenghts.Max();
+
+                    if (maxPassingMaxStrenght >= requiredMatchStrenght && maxPassingMaxStrenght > foundMatchStrenght)
+                    {
+                        foundMatchStrenght = maxPassingMaxStrenght;
+                        foundMatch = target;
+                    }
                 }
             }
 
             return foundMatch;
         }
 
-        public static bool IsMatch(string source, string target, bool caseSensitive = true, double matchStrenght = 0.66)
+        public static bool IsMatch(string source, string target, bool caseSensitive = true, double requiredMatchStrenght = 0.66, int minMatchCount = 2)
         {
-            var foundMatchStrenght = FindMatchStrenght(source, target, caseSensitive);
+            var foundMatchStrenghts = FindMatchStrenght(source, target, caseSensitive);
 
-            return foundMatchStrenght >= matchStrenght;
+            var passingMatchStrenghts = foundMatchStrenghts.Where(x => x >= requiredMatchStrenght);
+
+            return passingMatchStrenghts.Count() >= minMatchCount && passingMatchStrenghts.Max() >= requiredMatchStrenght;
         }
 
-        private static double FindMatchStrenght(string source, string target, bool caseSensitive)
+        private static List<double> FindMatchStrenght(string source, string target, bool caseSensitive)
         {
+            var comparisonResults = new List<double>();
+
             if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target))
-                return 0;
+                return comparisonResults;
 
             if (!caseSensitive)
             {
@@ -48,9 +59,7 @@ namespace FuzzyString
             }
 
             if (source == target)
-                return 1;
-
-            var comparisonResults = new List<double>();
+                comparisonResults.Add(1);
 
             if (source.Length == target.Length)
                 comparisonResults.Add(1 - (HammingDistance.Calculate(source, target) / (double)target.Length));
@@ -69,7 +78,7 @@ namespace FuzzyString
 
             comparisonResults.Add(RatcliffObershelpSimilarity.Calculate(source, target));
 
-            return comparisonResults.Max();
+            return comparisonResults;
         }
     }
 }

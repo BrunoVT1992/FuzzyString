@@ -1,7 +1,7 @@
 using FuzzyString;
 using NUnit.Framework;
 
-namespace Tests
+namespace FuzzyStringTest
 {
     public class IsMatchTests
     {
@@ -161,6 +161,30 @@ namespace Tests
         public void PartialWrongSpelling_CaseInsensitive()
         {
             var isMatch = FuzzyStringFinder.IsMatch("hello orld", "hello world", false);
+
+            Assert.IsTrue(isMatch);
+        }
+
+        [Test]
+        public void PartialWrongSpelling_LowRequiredMatchStrenght_HighMatchCount()
+        {
+            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, 0.5, 6);
+
+            Assert.IsTrue(isMatch);
+        }
+
+        [Test]
+        public void PartialWrongSpelling_HighRequiredMatchStrenght_HighMatchCount()
+        {
+            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, 0.85, 6);
+
+            Assert.IsFalse(isMatch);
+        }
+
+        [Test]
+        public void PartialWrongSpelling_LowMatchCount()
+        {
+            var isMatch = FuzzyStringFinder.IsMatch("hell Worl", "hello world", false, minMatchCount: 1);
 
             Assert.IsTrue(isMatch);
         }

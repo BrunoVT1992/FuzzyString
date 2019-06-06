@@ -225,5 +225,62 @@ namespace FuzzyStringTest
 
             Assert.IsNull(match);
         }
+
+        [Test]
+        public void SourcePartialMatch_HighRequiredMatchStrenght_HighMatchCount()
+        {
+            var targets = new List<string>
+            {
+                "foo",
+                "hello world"
+            };
+
+            var match = FuzzyStringFinder.FindMatch("hell worl", targets, false, 0.85, 6);
+
+            Assert.IsNull(match);
+        }
+
+        [Test]
+        public void SourcePartialMatch_LowRequiredMatchStrenght_HighMatchCount()
+        {
+            var targets = new List<string>
+            {
+                "foo",
+                "hello world"
+            };
+
+            var match = FuzzyStringFinder.FindMatch("hell worl", targets, false, 0.5, 6);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("hello world", match);
+        }
+
+        [Test]
+        public void SourcePartialMatch_MaxRequiredMatchStrenght()
+        {
+            var targets = new List<string>
+            {
+                "foo",
+                "hello world"
+            };
+
+            var match = FuzzyStringFinder.FindMatch("hell world", targets, false, 1.0);
+
+            Assert.IsNull(match);
+        }
+
+        [Test]
+        public void SourcePartialMatch_MinRequiredMatchStrenght()
+        {
+            var targets = new List<string>
+            {
+                "foo"
+            };
+
+            var match = FuzzyStringFinder.FindMatch("abc", targets, false, 0.0);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("foo", match);
+        }
     }
 }
