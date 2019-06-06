@@ -3,15 +3,17 @@ using System.Linq;
 
 namespace FuzzyString.Algorithms
 {
-    //https://en.wikipedia.org/wiki/Sørensen–Dice_coefficient
-    public static class SorensenDiceDistance
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Sørensen–Dice_coefficient
+    /// </summary>
+    public class SorensenDiceDistance : BaseAlgorithm
     {
-        public static double Calculate(string source, string target)
+        public override double Calculate(string source, string target)
         {
-            return 1 - CalculateIndex(source, target);
+            return CalculateSorensenDiceDistance(source, target);
         }
 
-        public static double CalculateIndex(string source, string target)
+        private double CalculateSorensenDiceDistance(string source, string target)
         {
             return (2 * Convert.ToDouble(source.Intersect(target).Count())) / (Convert.ToDouble(source.Length + target.Length));
         }

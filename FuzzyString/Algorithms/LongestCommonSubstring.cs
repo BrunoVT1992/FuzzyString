@@ -1,15 +1,19 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace FuzzyString.Algorithms
 {
-    //https://en.wikipedia.org/wiki/Longest_common_substring_problem
-    public static class LongestCommonSubstring
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Longest_common_substring_problem
+    /// </summary>
+    public class LongestCommonSubstring : BaseAlgorithm
     {
-        /// <summary>
-        /// Gives back the longes common subsequence
-        /// For example: in source 123456 and target 003400 it will give back 34
-        /// </summary>
-        public static string Calculate(string source, string target)
+        public override double Calculate(string source, string target)
+        {
+            return Convert.ToDouble(CalculateLongestCommonSubstring(source, target).Length) / Convert.ToDouble(Math.Min(source.Length, target.Length));
+        }
+
+        private string CalculateLongestCommonSubstring(string source, string target)
         {
             if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(target))
                 return null;
